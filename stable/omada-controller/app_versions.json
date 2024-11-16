@@ -3,16 +3,16 @@
         "healthy": true,
         "supported": true,
         "healthy_error": null,
-        "location": "/home/runner/_work/catalog/catalog/stable/omada-controller/15.0.13",
-        "last_update": "2024-05-29 12:35:14",
+        "location": "/home/runner/_work/catalog/catalog/stable/omada-controller/15.0.14",
+        "last_update": "2024-11-16 07:35:14",
         "required_features": [
             "definitions/timezone",
             "normalize/interfaceConfiguration",
             "definitions/certificate",
             "definitions/interface"
         ],
-        "human_version": "5.13.0_15.0.13",
-        "version": "15.0.13",
+        "human_version": "5.14.32.4_15.0.14",
+        "version": "15.0.14",
         "chart_metadata": {
             "annotations": {
                 "truecharts.org/category": "media",
@@ -55,7 +55,7 @@
                 "https://hub.docker.com/r/mbentley/omada-controller"
             ],
             "type": "application",
-            "version": "15.0.13"
+            "version": "15.0.14"
         },
         "app_metadata": null,
         "schema": {
