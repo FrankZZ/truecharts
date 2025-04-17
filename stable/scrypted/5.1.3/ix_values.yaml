@@ -24,6 +24,18 @@ service:
       main:
         protocol: http
         port: 10611
+  webrtc:
+    enabled: true
+    ports:
+      webrtc-tcp:
+        enabled: true
+        port: 3478
+        targetPort: 3478
+      webrtc-udp:
+        enabled: true
+        port: 3478
+        protocol: udp
+        targetPort: 3478
 
 workload:
   main:
