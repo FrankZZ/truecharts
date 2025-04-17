@@ -7,7 +7,6 @@ groups:
       Checkout the following documentation for more information:
       - https://truecharts.org/common/#images
 
-
   - name: General
     description: |
       For TrueNAS SCALE We've grouped a number of settings here, that all effact how apps run in general.
@@ -18,7 +17,6 @@ groups:
         - https://truecharts.org/common/podoptions/
         - Image Pull Secrets
 
-
   - name: Workload
     description: |
       These settings configure how the actual Pods and containers are running.
@@ -28,13 +26,12 @@ groups:
       - https://truecharts.org/common/workload/
       - https://truecharts.org/common/container/
 
-
   - name: App Configuration
     description: |
-       Every application has different values that may be required to run or have multiple options that the user may choose to enable or disable to change the behavior of the application.
-       Most options should have a Tooltip (Circled Question Mark) to further describe said option.
+      Every application has different values that may be required to run or have multiple options that the user may choose to enable or disable to change the behavior of the application.
+      Most options should have a Tooltip (Circled Question Mark) to further describe said option.
 
-       To find more information, lookup your chart-specific documentation in the Charts List: https://truecharts.org/charts/description-list/
+      To find more information, lookup your chart-specific documentation in the Charts List: https://truecharts.org/charts/description-list/
 
   - name: Services
     description: |
@@ -64,7 +61,6 @@ groups:
       - https://truecharts.org/scale/guides/nfs-share/
       - https://truecharts.org/general/faq/#why-pvc-is-recommended-over-hostpath
 
-
   - name: Ingress
     description: |
       Ingress (more commonly known as Reverse Proxy) settings can be configured here. This is how Kubernetes connects your Applications in containers to FQDNs (fully qualified domain names).
@@ -73,7 +69,6 @@ groups:
 
       Checkout the following documentation for more information:
       - https://truecharts.org/common/ingress/
-
 
   - name: SecurityContext
     description: |
@@ -84,7 +79,6 @@ groups:
 
       Checkout the following documentation for more information:
       - https://truecharts.org/common/securitycontext/
-
 
   - name: Resources
     description: |
@@ -121,7 +115,6 @@ groups:
       Checkout the following documentation for more information:
       - https://truecharts.org/common/metrics/
 
-
   - name: Addons
     description: |
       Addons that are supplied by the TrueCharts team to add additional capabilities for users to use on top of the application’s defaults.
@@ -132,7 +125,6 @@ groups:
       Checkout the following documentation for more information:
       - https://truecharts.org/common/addons/
       - https://truecharts.org/scale/guides/vpn-setup/
-
 
   - name: Experimental
     description: |
@@ -151,7 +143,6 @@ groups:
   - name: Dependencies
     description: |
       contains dependency setting for which we, currently, do not have seperate catagories (yet)
-
 
   - name: Documentation
     description: |
@@ -270,7 +261,6 @@ questions:
             additional_attrs: true
             type: dict
             attrs:
-
               - variable: type
                 label: Type (Advanced)
                 schema:
@@ -302,14 +292,12 @@ questions:
                         additional_attrs: true
                         type: dict
                         attrs:
-
                           - variable: main
                             label: Main Container
                             schema:
                               additional_attrs: true
                               type: dict
                               attrs:
-
                                 - variable: imageSelector
                                   label: Select Image
                                   schema:
@@ -429,7 +417,7 @@ questions:
                       label: "Options"
                       schema:
                         type: list
-                        default: [{"name": "ndots", "value": "1"}]
+                        default: [{ "name": "ndots", "value": "1" }]
                         items:
                           - variable: optionsEntry
                             label: "Option Entry"
@@ -526,7 +514,6 @@ questions:
       additional_attrs: true
       type: dict
       attrs:
-
         - variable: main
           label: Main Service
           description: The Primary service on which the healthcheck runs, often the webUI
@@ -565,7 +552,6 @@ questions:
                   additional_attrs: true
                   type: dict
                   attrs:
-
                     - variable: main
                       label: Main Service Port Configuration
                       schema:
@@ -579,8 +565,72 @@ questions:
                               type: int
                               default: 10611
                               required: true
+        - variable: webrtc
+          label: WebRTC Service
+          description: The service on which nodes connect to.
+          schema:
+            additional_attrs: true
+            type: dict
+            attrs:
+              - variable: enabled
+                label: Enable the Service
+                schema:
+                  type: boolean
+                  default: true
+                  hidden: true
+              - variable: type
+                label: Service Type
+                description: "ClusterIP's are only internally available and Loadbalancer exposes the service using the system loadbalancer"
+                schema:
+                  type: string
+                  default: LoadBalancer
+                  enum:
+                    - value: LoadBalancer
+                      description: LoadBalancer (Expose Ports)
+                    - value: ClusterIP
+                      description: ClusterIP (Do Not Expose Ports)
+
+              - variable: loadBalancerIP
+                label: LoadBalancer IP
+                description: "MetalLB Only: Selects the Loadbalancer IP to expose on. Required when using PortalButton with MetalLB"
+                schema:
+                  show_if: [["type", "=", "LoadBalancer"]]
+                  type: string
+                  default: ""
+              - variable: ports
+                label: "Service's Port(s) Configuration"
+                schema:
+                  additional_attrs: true
+                  type: dict
+                  attrs:
+                    - variable: webrtc-tcp
+                      label: WebRTC (TCP) Service Port Configuration
+                      schema:
+                        additional_attrs: true
+                        type: dict
+                        attrs:
+                          - variable: port
+                            label: Port
+                            description: This port exposes the container port on the service
+                            schema:
+                              type: int
+                              default: 8555
+                              required: true
+                    - variable: webrtc-udp
+                      label: WebRTC (UDP) Service Port Configuration
+                      schema:
+                        additional_attrs: true
+                        type: dict
+                        attrs:
+                          - variable: port
+                            label: Port
+                            description: This port exposes the container port on the service
+                            schema:
+                              type: int
+                              default: 8555
+                              required: true
   - variable: scaleExternalInterface
-    description: 'Add External Interfaces (Experimental, might change or be removed without further notice)'
+    description: "Add External Interfaces (Experimental, might change or be removed without further notice)"
     label: Add external Interfaces (Experimental)
     group: Networking
     schema:
@@ -657,7 +707,6 @@ questions:
                                     type: ipaddr
                                     cidr: false
                                     required: true
-
 
   - variable: serviceList
     label: Add Manual Custom Services
@@ -802,7 +851,6 @@ questions:
       additional_attrs: true
       type: dict
       attrs:
-
         - variable: server
           label: App Server Storage
           description: Stores the Application Server.
@@ -945,7 +993,7 @@ questions:
                               Format should be 3 digits, e.g. 770
                             schema:
                               type: string
-                              valid_chars: '[0-9]{3}'
+                              valid_chars: "[0-9]{3}"
                               default: ""
                           - variable: recursive
                             label: Recursive
@@ -984,14 +1032,14 @@ questions:
                   type: string
                   default: 256Gi
               - variable: storageClass
-                label: 'storageClass (Advanced)'
-                description: 'sets the storageClass to something other than iX default. Only for advanced usecases!'
+                label: "storageClass (Advanced)"
+                description: "sets the storageClass to something other than iX default. Only for advanced usecases!"
                 schema:
                   show_if: [["type", "=", "pvc"]]
                   type: string
                   default: ""
               - variable: volsync
-                label: 'VolSync (Experimental)'
+                label: "VolSync (Experimental)"
                 description: Backup, Restore and Synchronise PVC storage
                 schema:
                   show_if: [["type", "=", "pvc"]]
@@ -1052,7 +1100,7 @@ questions:
                                     type: boolean
                                     default: true
               - variable: static
-                label: 'Static Fixed PVC Bindings (Experimental)'
+                label: "Static Fixed PVC Bindings (Experimental)"
                 description: Link a PVC to a specific storage location
                 schema:
                   show_if: [["type", "=", "pvc"]]
@@ -1111,7 +1159,7 @@ questions:
                         show_if: [["mode", "=", "smb"]]
                         default: ""
               - variable: volumeSnapshots
-                label: 'Volume Snapshots (Experimental)'
+                label: "Volume Snapshots (Experimental)"
                 description: Add an entry to the list to force creation of a volumeSnapshot of this PVC
                 schema:
                   show_if: [["type", "=", "pvc"]]
@@ -1126,13 +1174,13 @@ questions:
                         attrs:
                           - variable: name
                             label: Name
-                            description: 'WARNING: renaming this, means deletion of the snapshot with the old name!'
+                            description: "WARNING: renaming this, means deletion of the snapshot with the old name!"
                             schema:
                               type: string
                               default: "mysnapshot"
                               required: true
                           - variable: volumeSnapshotClassName
-                            label: 'volumeSnapshot Class Name (Advanced)'
+                            label: "volumeSnapshot Class Name (Advanced)"
                             description: For use with PVCs using a non-default storageClass
                             schema:
                               type: string
@@ -1280,7 +1328,7 @@ questions:
                               Format should be 3 digits, e.g. 770
                             schema:
                               type: string
-                              valid_chars: '[0-9]{3}'
+                              valid_chars: "[0-9]{3}"
                               default: ""
                           - variable: recursive
                             label: Recursive
@@ -1319,14 +1367,14 @@ questions:
                   type: string
                   default: 256Gi
               - variable: storageClass
-                label: 'storageClass (Advanced)'
-                description: 'sets the storageClass to something other than iX default. Only for advanced usecases!'
+                label: "storageClass (Advanced)"
+                description: "sets the storageClass to something other than iX default. Only for advanced usecases!"
                 schema:
                   show_if: [["type", "=", "pvc"]]
                   type: string
                   default: ""
               - variable: volsync
-                label: 'VolSync (Experimental)'
+                label: "VolSync (Experimental)"
                 description: Backup, Restore and Synchronise PVC storage
                 schema:
                   show_if: [["type", "=", "pvc"]]
@@ -1387,7 +1435,7 @@ questions:
                                     type: boolean
                                     default: true
               - variable: static
-                label: 'Static Fixed PVC Bindings (Experimental)'
+                label: "Static Fixed PVC Bindings (Experimental)"
                 description: Link a PVC to a specific storage location
                 schema:
                   show_if: [["type", "=", "pvc"]]
@@ -1446,7 +1494,7 @@ questions:
                         show_if: [["mode", "=", "smb"]]
                         default: ""
               - variable: volumeSnapshots
-                label: 'Volume Snapshots (Experimental)'
+                label: "Volume Snapshots (Experimental)"
                 description: Add an entry to the list to force creation of a volumeSnapshot of this PVC
                 schema:
                   show_if: [["type", "=", "pvc"]]
@@ -1461,13 +1509,13 @@ questions:
                         attrs:
                           - variable: name
                             label: Name
-                            description: 'WARNING: renaming this, means deletion of the snapshot with the old name!'
+                            description: "WARNING: renaming this, means deletion of the snapshot with the old name!"
                             schema:
                               type: string
                               default: "mysnapshot"
                               required: true
                           - variable: volumeSnapshotClassName
-                            label: 'volumeSnapshot Class Name (Advanced)'
+                            label: "volumeSnapshot Class Name (Advanced)"
                             description: For use with PVCs using a non-default storageClass
                             schema:
                               type: string
@@ -1624,7 +1672,7 @@ questions:
                               Format should be 3 digits, e.g. 770
                             schema:
                               type: string
-                              valid_chars: '[0-9]{3}'
+                              valid_chars: "[0-9]{3}"
                               default: ""
                           - variable: recursive
                             label: Recursive
@@ -1670,14 +1718,14 @@ questions:
                   type: string
                   default: 256Gi
               - variable: storageClass
-                label: 'storageClass (Advanced)'
-                description: 'sets the storageClass to something other than iX default. Only for advanced usecases!'
+                label: "storageClass (Advanced)"
+                description: "sets the storageClass to something other than iX default. Only for advanced usecases!"
                 schema:
                   show_if: [["type", "=", "pvc"]]
                   type: string
                   default: ""
               - variable: volsync
-                label: 'VolSync (Experimental)'
+                label: "VolSync (Experimental)"
                 description: Backup, Restore and Synchronise PVC storage
                 schema:
                   show_if: [["type", "=", "pvc"]]
@@ -1738,7 +1786,7 @@ questions:
                                     type: boolean
                                     default: true
               - variable: static
-                label: 'Static Fixed PVC Bindings (Experimental)'
+                label: "Static Fixed PVC Bindings (Experimental)"
                 description: Link a PVC to a specific storage location
                 schema:
                   show_if: [["type", "=", "pvc"]]
@@ -1797,7 +1845,7 @@ questions:
                         show_if: [["mode", "=", "smb"]]
                         default: ""
               - variable: volumeSnapshots
-                label: 'Volume Snapshots (Experimental)'
+                label: "Volume Snapshots (Experimental)"
                 description: Add an entry to the list to force creation of a volumeSnapshot of this PVC
                 schema:
                   show_if: [["type", "=", "pvc"]]
@@ -1812,13 +1860,13 @@ questions:
                         attrs:
                           - variable: name
                             label: Name
-                            description: 'WARNING: renaming this, means deletion of the snapshot with the old name!'
+                            description: "WARNING: renaming this, means deletion of the snapshot with the old name!"
                             schema:
                               type: string
                               default: "mysnapshot"
                               required: true
                           - variable: volumeSnapshotClassName
-                            label: 'volumeSnapshot Class Name (Advanced)'
+                            label: "volumeSnapshot Class Name (Advanced)"
                             description: For use with PVCs using a non-default storageClass
                             schema:
                               type: string
@@ -1831,7 +1879,6 @@ questions:
       additional_attrs: true
       type: dict
       attrs:
-
         - variable: main
           label: Main Ingress
           schema:
@@ -1867,7 +1914,7 @@ questions:
                                   label: Paths
                                   schema:
                                     type: list
-                                    default: [{path: "/", pathType: "Prefix"}]
+                                    default: [{ path: "/", pathType: "Prefix" }]
                                     items:
                                       - variable: pathEntry
                                         label: Host
@@ -1908,7 +1955,7 @@ questions:
                                     type: boolean
                                     default: true
                                 - variable: allowCors
-                                  label: 'Allow Cross Origin Requests (advanced)'
+                                  label: "Allow Cross Origin Requests (advanced)"
                                   schema:
                                     type: boolean
                                     default: false
@@ -1944,7 +1991,7 @@ questions:
                                                 default: ""
                                                 required: true
                                             - variable: namespace
-                                              label: 'namespace (optional)'
+                                              label: "namespace (optional)"
                                               schema:
                                                 type: string
                                                 default: ""
@@ -2095,19 +2142,19 @@ questions:
 
                                 - variable: certificateIssuer
                                   label: Use Cert-Manager clusterIssuer
-                                  description: 'add the name of your cert-manager clusterIssuer here for automatic tls certificates.'
+                                  description: "add the name of your cert-manager clusterIssuer here for automatic tls certificates."
                                   schema:
                                     type: string
                                     default: ""
                                 - variable: clusterCertificate
-                                  label:  'Cluster Certificate (Advanced)'
-                                  description: 'Add the name of your cluster-wide certificate, that you set up in the ClusterIssuer chart.'
+                                  label: "Cluster Certificate (Advanced)"
+                                  description: "Add the name of your cluster-wide certificate, that you set up in the ClusterIssuer chart."
                                   schema:
                                     type: string
                                     show_if: [["certificateIssuer", "=", ""]]
                                     default: ""
                                 - variable: secretName
-                                  label: 'Use Custom Certificate Secret (Advanced)'
+                                  label: "Use Custom Certificate Secret (Advanced)"
                                   schema:
                                     show_if: [["certificateIssuer", "=", ""]]
                                     type: string
@@ -2226,13 +2273,13 @@ questions:
                                     required: true
                           - variable: certificateIssuer
                             label: Use Cert-Manager clusterIssuer
-                            description: 'add the name of your Cert-Manager clusterIssuer here for automatic tls certificates.'
+                            description: "add the name of your Cert-Manager clusterIssuer here for automatic tls certificates."
                             schema:
                               type: string
                               default: ""
                           - variable: clusterCertificate
-                            label:  'Cluster Certificate (Advanced)'
-                            description: 'Add the name of your cluster-wide certificate, that you set up in the ClusterIssuer chart.'
+                            label: "Cluster Certificate (Advanced)"
+                            description: "Add the name of your cluster-wide certificate, that you set up in the ClusterIssuer chart."
                             schema:
                               type: string
                               show_if: [["certificateIssuer", "=", ""]]
@@ -2477,18 +2524,18 @@ questions:
                 schema:
                   type: string
                   default: 8Gi
-                  valid_chars: '^(?!^0(e[0-9]|[EPTGMK]i?|)$)([0-9]+)(|[EPTGMK]i?|e[0-9]+)$'
-              - variable: 'gpu.intel.com/i915'
+                  valid_chars: "^(?!^0(e[0-9]|[EPTGMK]i?|)$)([0-9]+)(|[EPTGMK]i?|e[0-9]+)$"
+              - variable: "gpu.intel.com/i915"
                 label: Add Intel i915 GPUs
                 schema:
                   type: int
                   default: 0
-              - variable: 'nvidia.com/gpu'
+              - variable: "nvidia.com/gpu"
                 label: Add NVIDIA GPUs (Experimental)
                 schema:
                   type: int
                   default: 0
-              - variable: 'amd.com/gpu'
+              - variable: "amd.com/gpu"
                 label: Add AMD GPUs
                 schema:
                   type: int
@@ -2515,7 +2562,7 @@ questions:
                   type: string
                   default: 50Mi
                   hidden: true
-                  valid_chars: '^(?!^0(e[0-9]|[EPTGMK]i?|)$)([0-9]+)(|[EPTGMK]i?|e[0-9]+)$'
+                  valid_chars: "^(?!^0(e[0-9]|[EPTGMK]i?|)$)([0-9]+)(|[EPTGMK]i?|e[0-9]+)$"
   - variable: deviceList
     label: Mount USB Devices
     group: Devices
@@ -2558,58 +2605,58 @@ questions:
                   type: string
                   default: "/dev/ttyACM0"
 
-#  - variable: horizontalPodAutoscaler
-#    group: Experimental
-#    label: (Advanced) Horizontal Pod Autoscaler
-#    schema:
-#      type: list
-#      default: []
-#      items:
-#      - variable: hpaEntry
-#        label: HPA Entry
-#        schema:
-#          additional_attrs: true
-#          type: dict
-#          attrs:
-#            - variable: name
-#              label: Name
-#              schema:
-#                type: string
-#                required: true
-#                default: ""
-#            - variable: enabled
-#              label: Enabled
-#              schema:
-#                type: boolean
-#                default: false
-#                show_subquestions_if: true
-#                subquestions:
-#                  - variable: target
-#                    label: Target
-#                    description: Deployment name, Defaults to Main Deployment
-#                    schema:
-#                      type: string
-#                      default: ""
-#                  - variable: minReplicas
-#                    label: Minimum Replicas
-#                    schema:
-#                      type: int
-#                      default: 1
-#                  - variable: maxReplicas
-#                    label: Maximum Replicas
-#                    schema:
-#                      type: int
-#                      default: 5
-#                  - variable: targetCPUUtilizationPercentage
-#                    label: Target CPU Utilization Percentage
-#                    schema:
-#                      type: int
-#                      default: 80
-#                  - variable: targetMemoryUtilizationPercentage
-#                    label: Target Memory Utilization Percentage
-#                    schema:
-#                      type: int
-#                      default: 80
+  #  - variable: horizontalPodAutoscaler
+  #    group: Experimental
+  #    label: (Advanced) Horizontal Pod Autoscaler
+  #    schema:
+  #      type: list
+  #      default: []
+  #      items:
+  #      - variable: hpaEntry
+  #        label: HPA Entry
+  #        schema:
+  #          additional_attrs: true
+  #          type: dict
+  #          attrs:
+  #            - variable: name
+  #              label: Name
+  #              schema:
+  #                type: string
+  #                required: true
+  #                default: ""
+  #            - variable: enabled
+  #              label: Enabled
+  #              schema:
+  #                type: boolean
+  #                default: false
+  #                show_subquestions_if: true
+  #                subquestions:
+  #                  - variable: target
+  #                    label: Target
+  #                    description: Deployment name, Defaults to Main Deployment
+  #                    schema:
+  #                      type: string
+  #                      default: ""
+  #                  - variable: minReplicas
+  #                    label: Minimum Replicas
+  #                    schema:
+  #                      type: int
+  #                      default: 1
+  #                  - variable: maxReplicas
+  #                    label: Maximum Replicas
+  #                    schema:
+  #                      type: int
+  #                      default: 5
+  #                  - variable: targetCPUUtilizationPercentage
+  #                    label: Target CPU Utilization Percentage
+  #                    schema:
+  #                      type: int
+  #                      default: 80
+  #                  - variable: targetMemoryUtilizationPercentage
+  #                    label: Target Memory Utilization Percentage
+  #                    schema:
+  #                      type: int
+  #                      default: 80
   - variable: networkPolicy
     group: Experimental
     label: (Advanced) Network Policy
@@ -2617,377 +2664,377 @@ questions:
       type: list
       default: []
       items:
-      - variable: netPolicyEntry
-        label: Network Policy Entry
-        schema:
-          additional_attrs: true
-          type: dict
-          attrs:
-            - variable: name
-              label: Name
-              schema:
-                type: string
-                required: true
-                default: ""
-            - variable: enabled
-              label: Enabled
-              schema:
-                type: boolean
-                default: false
-                show_subquestions_if: true
-                subquestions:
-                  - variable: policyType
-                    label: Policy Type
-                    schema:
-                      type: string
-                      default: ""
-                      enum:
-                        - value: ""
-                          description: Default
-                        - value: ingress
-                          description: Ingress
-                        - value: egress
-                          description: Egress
-                        - value: ingress-egress
-                          description: Ingress and Egress
-                  - variable: egress
-                    label: Egress
-                    schema:
-                      type: list
-                      default: []
-                      items:
-                        - variable: egressEntry
-                          label: ""
-                          schema:
-                            additional_attrs: true
-                            type: dict
-                            attrs:
-                              - variable: to
-                                label: To
-                                schema:
-                                  type: list
-                                  default: []
-                                  items:
-                                    - variable: toEntry
-                                      label: ""
-                                      schema:
-                                        additional_attrs: true
-                                        type: dict
-                                        attrs:
-                                          - variable: ipBlock
-                                            label: IP Block
-                                            schema:
-                                              additional_attrs: true
-                                              type: dict
-                                              attrs:
-                                                - variable: cidr
-                                                  label: CIDR
-                                                  schema:
-                                                    type: string
-                                                    default: ""
-                                                - variable: except
-                                                  label: Except
-                                                  schema:
-                                                    type: list
-                                                    default: []
-                                                    items:
-                                                      - variable: exceptint
-                                                        label: ""
-                                                        schema:
-                                                          type: string
-                                          - variable: namespaceSelector
-                                            label: Namespace Selector
-                                            schema:
-                                              additional_attrs: true
-                                              type: dict
-                                              attrs:
-                                                - variable: matchExpressions
-                                                  label: Match Expressions
-                                                  schema:
-                                                    type: list
-                                                    default: []
-                                                    items:
-                                                      - variable: expressionEntry
-                                                        label: ""
-                                                        schema:
-                                                          additional_attrs: true
-                                                          type: dict
-                                                          attrs:
-                                                            - variable: key
-                                                              label: Key
-                                                              schema:
-                                                                type: string
-                                                            - variable: operator
-                                                              label: Operator
-                                                              schema:
-                                                                type: string
-                                                                default: TCP
-                                                                enum:
-                                                                  - value: In
-                                                                    description: In
-                                                                  - value: NotIn
-                                                                    description: NotIn
-                                                                  - value: Exists
-                                                                    description: Exists
-                                                                  - value: DoesNotExist
-                                                                    description: DoesNotExist
-                                                            - variable: values
-                                                              label: Values
-                                                              schema:
-                                                                type: list
-                                                                default: []
-                                                                items:
-                                                                  - variable: value
-                                                                    label: ""
-                                                                    schema:
-                                                                      type: string
-                                          - variable: podSelector
-                                            label: ""
-                                            schema:
-                                              additional_attrs: true
-                                              type: dict
-                                              attrs:
-                                                - variable: matchExpressions
-                                                  label: Match Expressions
-                                                  schema:
-                                                    type: list
-                                                    default: []
-                                                    items:
-                                                      - variable: expressionEntry
-                                                        label: ""
-                                                        schema:
-                                                          additional_attrs: true
-                                                          type: dict
-                                                          attrs:
-                                                            - variable: key
-                                                              label: Key
-                                                              schema:
-                                                                type: string
-                                                            - variable: operator
-                                                              label: Operator
-                                                              schema:
-                                                                type: string
-                                                                default: TCP
-                                                                enum:
-                                                                  - value: In
-                                                                    description: In
-                                                                  - value: NotIn
-                                                                    description: NotIn
-                                                                  - value: Exists
-                                                                    description: Exists
-                                                                  - value: DoesNotExist
-                                                                    description: DoesNotExist
-                                                            - variable: values
-                                                              label: Values
-                                                              schema:
-                                                                type: list
-                                                                default: []
-                                                                items:
-                                                                  - variable: value
-                                                                    label: ""
-                                                                    schema:
-                                                                      type: string
-                              - variable: ports
-                                label: Ports
-                                schema:
-                                  type: list
-                                  default: []
-                                  items:
-                                    - variable: portsEntry
-                                      label: ""
-                                      schema:
-                                        additional_attrs: true
-                                        type: dict
-                                        attrs:
-                                          - variable: port
-                                            label: Port
-                                            schema:
-                                              type: int
-                                          - variable: endPort
-                                            label: End Port
-                                            schema:
-                                              type: int
-                                          - variable: protocol
-                                            label: Protocol
-                                            schema:
-                                              type: string
-                                              default: TCP
-                                              enum:
-                                                - value: TCP
-                                                  description: TCP
-                                                - value: UDP
-                                                  description: UDP
-                                                - value: SCTP
-                                                  description: SCTP
-                  - variable: ingress
-                    label: Ingress
-                    schema:
-                      type: list
-                      default: []
-                      items:
-                        - variable: ingressEntry
-                          label: ""
-                          schema:
-                            additional_attrs: true
-                            type: dict
-                            attrs:
-                              - variable: from
-                                label: From
-                                schema:
-                                  type: list
-                                  default: []
-                                  items:
-                                    - variable: fromEntry
-                                      label: ""
-                                      schema:
-                                        additional_attrs: true
-                                        type: dict
-                                        attrs:
-                                          - variable: ipBlock
-                                            label: IP Block
-                                            schema:
-                                              additional_attrs: true
-                                              type: dict
-                                              attrs:
-                                                - variable: cidr
-                                                  label: CIDR
-                                                  schema:
-                                                    type: string
-                                                    default: ""
-                                                - variable: except
-                                                  label: Except
-                                                  schema:
-                                                    type: list
-                                                    default: []
-                                                    items:
-                                                      - variable: exceptint
-                                                        label: ""
-                                                        schema:
-                                                          type: string
-                                          - variable: namespaceSelector
-                                            label: Namespace Selector
-                                            schema:
-                                              additional_attrs: true
-                                              type: dict
-                                              attrs:
-                                                - variable: matchExpressions
-                                                  label: Match Expressions
-                                                  schema:
-                                                    type: list
-                                                    default: []
-                                                    items:
-                                                      - variable: expressionEntry
-                                                        label: ""
-                                                        schema:
-                                                          additional_attrs: true
-                                                          type: dict
-                                                          attrs:
-                                                            - variable: key
-                                                              label: Key
-                                                              schema:
-                                                                type: string
-                                                            - variable: operator
-                                                              label: Operator
-                                                              schema:
-                                                                type: string
-                                                                default: TCP
-                                                                enum:
-                                                                  - value: In
-                                                                    description: In
-                                                                  - value: NotIn
-                                                                    description: NotIn
-                                                                  - value: Exists
-                                                                    description: Exists
-                                                                  - value: DoesNotExist
-                                                                    description: DoesNotExist
-                                                            - variable: values
-                                                              label: Values
-                                                              schema:
-                                                                type: list
-                                                                default: []
-                                                                items:
-                                                                  - variable: value
-                                                                    label: ""
-                                                                    schema:
-                                                                      type: string
-                                          - variable: podSelector
-                                            label: ""
-                                            schema:
-                                              additional_attrs: true
-                                              type: dict
-                                              attrs:
-                                                - variable: matchExpressions
-                                                  label: Match Expressions
-                                                  schema:
-                                                    type: list
-                                                    default: []
-                                                    items:
-                                                      - variable: expressionEntry
-                                                        label: ""
-                                                        schema:
-                                                          additional_attrs: true
-                                                          type: dict
-                                                          attrs:
-                                                            - variable: key
-                                                              label: Key
-                                                              schema:
-                                                                type: string
-                                                            - variable: operator
-                                                              label: Operator
-                                                              schema:
-                                                                type: string
-                                                                default: TCP
-                                                                enum:
-                                                                  - value: In
-                                                                    description: In
-                                                                  - value: NotIn
-                                                                    description: NotIn
-                                                                  - value: Exists
-                                                                    description: Exists
-                                                                  - value: DoesNotExist
-                                                                    description: DoesNotExist
-                                                            - variable: values
-                                                              label: Values
-                                                              schema:
-                                                                type: list
-                                                                default: []
-                                                                items:
-                                                                  - variable: value
-                                                                    label: ""
-                                                                    schema:
-                                                                      type: string
-                              - variable: ports
-                                label: Ports
-                                schema:
-                                  type: list
-                                  default: []
-                                  items:
-                                    - variable: portsEntry
-                                      label: ""
-                                      schema:
-                                        additional_attrs: true
-                                        type: dict
-                                        attrs:
-                                          - variable: port
-                                            label: Port
-                                            schema:
-                                              type: int
-                                          - variable: endPort
-                                            label: End Port
-                                            schema:
-                                              type: int
-                                          - variable: protocol
-                                            label: Protocol
-                                            schema:
-                                              type: string
-                                              default: TCP
-                                              enum:
-                                                - value: TCP
-                                                  description: TCP
-                                                - value: UDP
-                                                  description: UDP
-                                                - value: SCTP
-                                                  description: SCTP
+        - variable: netPolicyEntry
+          label: Network Policy Entry
+          schema:
+            additional_attrs: true
+            type: dict
+            attrs:
+              - variable: name
+                label: Name
+                schema:
+                  type: string
+                  required: true
+                  default: ""
+              - variable: enabled
+                label: Enabled
+                schema:
+                  type: boolean
+                  default: false
+                  show_subquestions_if: true
+                  subquestions:
+                    - variable: policyType
+                      label: Policy Type
+                      schema:
+                        type: string
+                        default: ""
+                        enum:
+                          - value: ""
+                            description: Default
+                          - value: ingress
+                            description: Ingress
+                          - value: egress
+                            description: Egress
+                          - value: ingress-egress
+                            description: Ingress and Egress
+                    - variable: egress
+                      label: Egress
+                      schema:
+                        type: list
+                        default: []
+                        items:
+                          - variable: egressEntry
+                            label: ""
+                            schema:
+                              additional_attrs: true
+                              type: dict
+                              attrs:
+                                - variable: to
+                                  label: To
+                                  schema:
+                                    type: list
+                                    default: []
+                                    items:
+                                      - variable: toEntry
+                                        label: ""
+                                        schema:
+                                          additional_attrs: true
+                                          type: dict
+                                          attrs:
+                                            - variable: ipBlock
+                                              label: IP Block
+                                              schema:
+                                                additional_attrs: true
+                                                type: dict
+                                                attrs:
+                                                  - variable: cidr
+                                                    label: CIDR
+                                                    schema:
+                                                      type: string
+                                                      default: ""
+                                                  - variable: except
+                                                    label: Except
+                                                    schema:
+                                                      type: list
+                                                      default: []
+                                                      items:
+                                                        - variable: exceptint
+                                                          label: ""
+                                                          schema:
+                                                            type: string
+                                            - variable: namespaceSelector
+                                              label: Namespace Selector
+                                              schema:
+                                                additional_attrs: true
+                                                type: dict
+                                                attrs:
+                                                  - variable: matchExpressions
+                                                    label: Match Expressions
+                                                    schema:
+                                                      type: list
+                                                      default: []
+                                                      items:
+                                                        - variable: expressionEntry
+                                                          label: ""
+                                                          schema:
+                                                            additional_attrs: true
+                                                            type: dict
+                                                            attrs:
+                                                              - variable: key
+                                                                label: Key
+                                                                schema:
+                                                                  type: string
+                                                              - variable: operator
+                                                                label: Operator
+                                                                schema:
+                                                                  type: string
+                                                                  default: TCP
+                                                                  enum:
+                                                                    - value: In
+                                                                      description: In
+                                                                    - value: NotIn
+                                                                      description: NotIn
+                                                                    - value: Exists
+                                                                      description: Exists
+                                                                    - value: DoesNotExist
+                                                                      description: DoesNotExist
+                                                              - variable: values
+                                                                label: Values
+                                                                schema:
+                                                                  type: list
+                                                                  default: []
+                                                                  items:
+                                                                    - variable: value
+                                                                      label: ""
+                                                                      schema:
+                                                                        type: string
+                                            - variable: podSelector
+                                              label: ""
+                                              schema:
+                                                additional_attrs: true
+                                                type: dict
+                                                attrs:
+                                                  - variable: matchExpressions
+                                                    label: Match Expressions
+                                                    schema:
+                                                      type: list
+                                                      default: []
+                                                      items:
+                                                        - variable: expressionEntry
+                                                          label: ""
+                                                          schema:
+                                                            additional_attrs: true
+                                                            type: dict
+                                                            attrs:
+                                                              - variable: key
+                                                                label: Key
+                                                                schema:
+                                                                  type: string
+                                                              - variable: operator
+                                                                label: Operator
+                                                                schema:
+                                                                  type: string
+                                                                  default: TCP
+                                                                  enum:
+                                                                    - value: In
+                                                                      description: In
+                                                                    - value: NotIn
+                                                                      description: NotIn
+                                                                    - value: Exists
+                                                                      description: Exists
+                                                                    - value: DoesNotExist
+                                                                      description: DoesNotExist
+                                                              - variable: values
+                                                                label: Values
+                                                                schema:
+                                                                  type: list
+                                                                  default: []
+                                                                  items:
+                                                                    - variable: value
+                                                                      label: ""
+                                                                      schema:
+                                                                        type: string
+                                - variable: ports
+                                  label: Ports
+                                  schema:
+                                    type: list
+                                    default: []
+                                    items:
+                                      - variable: portsEntry
+                                        label: ""
+                                        schema:
+                                          additional_attrs: true
+                                          type: dict
+                                          attrs:
+                                            - variable: port
+                                              label: Port
+                                              schema:
+                                                type: int
+                                            - variable: endPort
+                                              label: End Port
+                                              schema:
+                                                type: int
+                                            - variable: protocol
+                                              label: Protocol
+                                              schema:
+                                                type: string
+                                                default: TCP
+                                                enum:
+                                                  - value: TCP
+                                                    description: TCP
+                                                  - value: UDP
+                                                    description: UDP
+                                                  - value: SCTP
+                                                    description: SCTP
+                    - variable: ingress
+                      label: Ingress
+                      schema:
+                        type: list
+                        default: []
+                        items:
+                          - variable: ingressEntry
+                            label: ""
+                            schema:
+                              additional_attrs: true
+                              type: dict
+                              attrs:
+                                - variable: from
+                                  label: From
+                                  schema:
+                                    type: list
+                                    default: []
+                                    items:
+                                      - variable: fromEntry
+                                        label: ""
+                                        schema:
+                                          additional_attrs: true
+                                          type: dict
+                                          attrs:
+                                            - variable: ipBlock
+                                              label: IP Block
+                                              schema:
+                                                additional_attrs: true
+                                                type: dict
+                                                attrs:
+                                                  - variable: cidr
+                                                    label: CIDR
+                                                    schema:
+                                                      type: string
+                                                      default: ""
+                                                  - variable: except
+                                                    label: Except
+                                                    schema:
+                                                      type: list
+                                                      default: []
+                                                      items:
+                                                        - variable: exceptint
+                                                          label: ""
+                                                          schema:
+                                                            type: string
+                                            - variable: namespaceSelector
+                                              label: Namespace Selector
+                                              schema:
+                                                additional_attrs: true
+                                                type: dict
+                                                attrs:
+                                                  - variable: matchExpressions
+                                                    label: Match Expressions
+                                                    schema:
+                                                      type: list
+                                                      default: []
+                                                      items:
+                                                        - variable: expressionEntry
+                                                          label: ""
+                                                          schema:
+                                                            additional_attrs: true
+                                                            type: dict
+                                                            attrs:
+                                                              - variable: key
+                                                                label: Key
+                                                                schema:
+                                                                  type: string
+                                                              - variable: operator
+                                                                label: Operator
+                                                                schema:
+                                                                  type: string
+                                                                  default: TCP
+                                                                  enum:
+                                                                    - value: In
+                                                                      description: In
+                                                                    - value: NotIn
+                                                                      description: NotIn
+                                                                    - value: Exists
+                                                                      description: Exists
+                                                                    - value: DoesNotExist
+                                                                      description: DoesNotExist
+                                                              - variable: values
+                                                                label: Values
+                                                                schema:
+                                                                  type: list
+                                                                  default: []
+                                                                  items:
+                                                                    - variable: value
+                                                                      label: ""
+                                                                      schema:
+                                                                        type: string
+                                            - variable: podSelector
+                                              label: ""
+                                              schema:
+                                                additional_attrs: true
+                                                type: dict
+                                                attrs:
+                                                  - variable: matchExpressions
+                                                    label: Match Expressions
+                                                    schema:
+                                                      type: list
+                                                      default: []
+                                                      items:
+                                                        - variable: expressionEntry
+                                                          label: ""
+                                                          schema:
+                                                            additional_attrs: true
+                                                            type: dict
+                                                            attrs:
+                                                              - variable: key
+                                                                label: Key
+                                                                schema:
+                                                                  type: string
+                                                              - variable: operator
+                                                                label: Operator
+                                                                schema:
+                                                                  type: string
+                                                                  default: TCP
+                                                                  enum:
+                                                                    - value: In
+                                                                      description: In
+                                                                    - value: NotIn
+                                                                      description: NotIn
+                                                                    - value: Exists
+                                                                      description: Exists
+                                                                    - value: DoesNotExist
+                                                                      description: DoesNotExist
+                                                              - variable: values
+                                                                label: Values
+                                                                schema:
+                                                                  type: list
+                                                                  default: []
+                                                                  items:
+                                                                    - variable: value
+                                                                      label: ""
+                                                                      schema:
+                                                                        type: string
+                                - variable: ports
+                                  label: Ports
+                                  schema:
+                                    type: list
+                                    default: []
+                                    items:
+                                      - variable: portsEntry
+                                        label: ""
+                                        schema:
+                                          additional_attrs: true
+                                          type: dict
+                                          attrs:
+                                            - variable: port
+                                              label: Port
+                                              schema:
+                                                type: int
+                                            - variable: endPort
+                                              label: End Port
+                                              schema:
+                                                type: int
+                                            - variable: protocol
+                                              label: Protocol
+                                              schema:
+                                                type: string
+                                                default: TCP
+                                                enum:
+                                                  - value: TCP
+                                                    description: TCP
+                                                  - value: UDP
+                                                    description: UDP
+                                                  - value: SCTP
+                                                    description: SCTP
 
   - variable: addons
     group: Addons
@@ -2996,7 +3043,6 @@ questions:
       additional_attrs: true
       type: dict
       attrs:
-
         - variable: codeserver
           label: Codeserver
           schema:
@@ -3054,7 +3100,7 @@ questions:
                                           type: int
                                           default: 36107
                     - variable: ingress
-                      label:  "Ingress"
+                      label: "Ingress"
                       schema:
                         additional_attrs: true
                         type: dict
@@ -3088,7 +3134,13 @@ questions:
                                               label: Paths
                                               schema:
                                                 type: list
-                                                default: [{path: "/", pathType: "Prefix"}]
+                                                default:
+                                                  [
+                                                    {
+                                                      path: "/",
+                                                      pathType: "Prefix",
+                                                    },
+                                                  ]
                                                 items:
                                                   - variable: pathEntry
                                                     label: Host
@@ -3128,17 +3180,19 @@ questions:
                                                 type: boolean
                                                 default: true
                                             - variable: allowCors
-                                              label: 'Allow Cross Origin Requests (advanced)'
+                                              label: "Allow Cross Origin Requests (advanced)"
                                               schema:
                                                 type: boolean
                                                 default: false
-                                                show_if: [["enabled", "=", true]]
+                                                show_if:
+                                                  [["enabled", "=", true]]
                                             - variable: entrypoints
                                               label: Entrypoints
                                               schema:
                                                 type: list
                                                 default: ["websecure"]
-                                                show_if: [["enabled", "=", true]]
+                                                show_if:
+                                                  [["enabled", "=", true]]
                                                 items:
                                                   - variable: entrypoint
                                                     label: Entrypoint
@@ -3149,7 +3203,8 @@ questions:
                                               schema:
                                                 type: list
                                                 default: []
-                                                show_if: [["enabled", "=", true]]
+                                                show_if:
+                                                  [["enabled", "=", true]]
                                                 items:
                                                   - variable: middleware
                                                     label: Middleware
@@ -3164,7 +3219,7 @@ questions:
                                                             default: ""
                                                             required: true
                                                         - variable: namespace
-                                                          label: 'namespace (optional)'
+                                                          label: "namespace (optional)"
                                                           schema:
                                                             type: string
                                                             default: ""
@@ -3186,7 +3241,8 @@ questions:
                                               schema:
                                                 type: string
                                                 default: ""
-                                                show_if: [["enabled", "=", true]]
+                                                show_if:
+                                                  [["enabled", "=", true]]
                                 - variable: advanced
                                   label: Show Advanced Settings
                                   description: Advanced settings are not covered by TrueCharts Support
@@ -3227,27 +3283,48 @@ questions:
 
                                             - variable: certificateIssuer
                                               label: Use Cert-Manager clusterIssuer
-                                              description: 'add the name of your cert-manager clusterIssuer here for automatic tls certificates.'
+                                              description: "add the name of your cert-manager clusterIssuer here for automatic tls certificates."
                                               schema:
                                                 type: string
                                                 default: ""
                                             - variable: clusterCertificate
-                                              label:  'Cluster Certificate (Advanced)'
-                                              description: 'Add the name of your cluster-wide certificate, that you set up in the ClusterIssuer chart.'
+                                              label: "Cluster Certificate (Advanced)"
+                                              description: "Add the name of your cluster-wide certificate, that you set up in the ClusterIssuer chart."
                                               schema:
                                                 type: string
-                                                show_if: [["certificateIssuer", "=", ""]]
+                                                show_if:
+                                                  [
+                                                    [
+                                                      "certificateIssuer",
+                                                      "=",
+                                                      "",
+                                                    ],
+                                                  ]
                                                 default: ""
                                             - variable: secretName
-                                              label: 'Use Custom Certificate Secret (Advanced)'
+                                              label: "Use Custom Certificate Secret (Advanced)"
                                               schema:
-                                                show_if: [["certificateIssuer", "=", ""]]
+                                                show_if:
+                                                  [
+                                                    [
+                                                      "certificateIssuer",
+                                                      "=",
+                                                      "",
+                                                    ],
+                                                  ]
                                                 type: string
                                                 default: ""
                                             - variable: scaleCert
-                                              label: 'Use TrueNAS SCALE Certificate (Deprecated)'
+                                              label: "Use TrueNAS SCALE Certificate (Deprecated)"
                                               schema:
-                                                show_if: [["certificateIssuer", "=", ""]]
+                                                show_if:
+                                                  [
+                                                    [
+                                                      "certificateIssuer",
+                                                      "=",
+                                                      "",
+                                                    ],
+                                                  ]
                                                 type: int
                                                 $ref:
                                                   - "definitions/certificate"
@@ -3516,4 +3593,3 @@ questions:
             type: boolean
             default: true
             hidden: true
-
